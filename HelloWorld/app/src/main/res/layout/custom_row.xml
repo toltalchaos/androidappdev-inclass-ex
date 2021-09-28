@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <TextView
+        android:id="@+id/text_view_row_sender"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:textColor="@color/purple_200"
+        android:textSize="14sp"
+        android:textStyle="bold">
+    </TextView>
+    <TextView
+        android:id="@+id/text_view_row_date"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:textColor="@color/purple_200"
+        android:textSize="14sp"
+        android:textStyle="italic">
+    </TextView>
+    <TextView
+        android:id="@+id/text_view_row_message"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_below="@id/text_view_row_sender"
+        android:textColor="@color/purple_200"
+        android:textSize="16sp"
+        android:typeface="sans"
+        android:textStyle="bold"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:singleLine="true">
+    </TextView>
+
+</RelativeLayout>

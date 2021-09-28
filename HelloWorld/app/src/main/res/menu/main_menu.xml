@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_item_view_chatter"
+        android:title="@string/view_chatter">
+
+    </item>
+    <item
+        android:id="@+id/menu_item_chatter_listview"
+        android:title="@string/view_chatter_listview">
+
+    </item>
+    <item
+        android:id="@+id/menu_item_custom_listview"
+        android:title="@string/view_custom_list_view">
+
+    </item>
+    <item
+        android:id="@+id/menu_item_color_spinner"
+        android:title="@string/color_spinner_title">
+    </item>
+    <item
+        android:id="@+id/menu_item_object_spinner"
+        android:title="@string/menu_item_view_object_spinner">
+    </item>
+    <item
+        android:id="@+id/menu_item_preference"
+        android:title="@string/menu_item_view_prefrences">
+    </item>
+
+
+</menu>

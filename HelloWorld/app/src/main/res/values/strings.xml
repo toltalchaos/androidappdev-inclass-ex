@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">HelloWorld</string>
+    <string name="edit_text_hint">Edit Text</string>
+    <string name="button_text">Submit/view posts</string>
+    <string name="button_launch">Launch</string>
+    <string name="blank_page_text">Blank Page</string>
+    <string name="post_message">post Message</string>
+    <string name="view_chatter">View Chatter</string>
+    <string name="view_chatter_listview">View Chatter list view</string>
+    <string name="view_custom_list_view">Custom List View</string>
+
+    <string name="menu_item_view_color_spinner">Color Spinner</string>
+    <string name="menu_item_view_prefrences">Preferences</string>
+    <string name="menu_item_view_object_spinner">Object Spinner</string>
+
+    <string name="text_view_object_date">Date</string>
+    <string name="text_view_object_sender">Sender</string>
+    <string name="text_view_object_message">Message</string>
+
+
+    <string name="preferences_username_key">user_name</string>
+    <string name="preferences_password_key">password</string>
+    <string name="preferences_password_title">Password</string>
+    <string name="preferences_password_summary">use this to change your password</string>
+    <string name="preferences_username_title">Login Name</string>
+    <string name="preferences_username_summary">use this to change your login name</string>
+
+    <string name="preference_main_bg_key">main_bg</string>
+    <string name="preference_main_bg_title">Main Background_color</string>
+    <string name="preference_main_bg_summary">use this to change your main background color</string>
+
+    <string name="color_spinner_title">color spinner</string>
+</resources>
