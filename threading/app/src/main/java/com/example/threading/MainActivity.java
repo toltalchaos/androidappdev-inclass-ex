@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 String msg = editTextMessage.getText().toString();
                 pd = ProgressDialog.show(this, "Title", "posting message...");
                 //execute calls doInBackground method - override in class
+                //execute runs async in new thread.
                 new ChatWriter().execute(msg);
                 editTextMessage.setText("");
                 break;
