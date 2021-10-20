@@ -3,6 +3,7 @@ package com.example.samchatterappgentwo;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -74,5 +75,10 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    public void onViewMessagesButton(View view) {
+        Intent openMessagesIntent = new Intent(this, ViewRemoteChatterListViewActivity.class);
+        startActivity(openMessagesIntent);
     }
 }

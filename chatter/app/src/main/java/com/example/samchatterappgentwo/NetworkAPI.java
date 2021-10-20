@@ -28,6 +28,8 @@ public class NetworkAPI {
             String message = String.format("ERROR: %d \n ERROR MSG %s",responseCode, connection.getResponseMessage());
             throw new Exception(message);
         }
+
+        //read bytes in a buffer
         int bytesRead = 0;
         byte[] buffer = new byte[1024];
         while ((bytesRead = in.read(buffer)) > 0){
@@ -35,6 +37,7 @@ public class NetworkAPI {
             out.write(buffer, 0, bytesRead);
         }
         out.close();
+        //return byte array
         return out.toByteArray();
     }
     public String getResponseString(String urlString) throws Exception{
