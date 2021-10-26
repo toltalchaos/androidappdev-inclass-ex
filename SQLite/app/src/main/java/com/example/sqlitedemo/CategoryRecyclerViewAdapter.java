@@ -1,10 +1,13 @@
 package com.example.sqlitedemo;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -55,16 +58,30 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryRe
     }
 
     // step 1 viewholder class that defines views for single item
-    public static class CategoryViewHolder extends ViewHolder {
+    public class CategoryViewHolder extends ViewHolder {
 
         public TextView categoryIdTextview;
         public TextView categoryNameTextView;
+        public ImageButton deleteButton;
 
         public CategoryViewHolder(@NonNull View itemView) {
             super(itemView);
 
             categoryIdTextview = itemView.findViewById(R.id.list_item_category_id);
             categoryNameTextView = itemView.findViewById(R.id.list_item_category_name);
+
+            deleteButton = itemView.findViewById(R.id.list_item_category_delete_button);
+
+            deleteButton.setOnClickListener(view -> {
+                int position = getAdapterPosition();
+                Toast.makeText(itemView.getContext(), "delete Category at" +position, Toast.LENGTH_SHORT ).show();
+                //send message from adapter to main activity to delete item with the matching ID
+                Category currentCategory = categories.get(position);
+                Intent delteCategoryIntent = new Intent();
+                delteCategoryIntent.setAction(MainActivity.INTENT_ACTION_CATEGORY_DELETE);
+                delteCategoryIntent.putExtra(MainActivity.EXTRA_CATEGORY_CATEGORY_ID, currentCategory.getCategoryId());
+                itemView.getContext().sendBroadcast(delteCategoryIntent);
+            });
         }
     }
 }
