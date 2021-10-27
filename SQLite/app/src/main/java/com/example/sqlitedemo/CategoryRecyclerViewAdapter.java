@@ -63,14 +63,16 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryRe
         public TextView categoryIdTextview;
         public TextView categoryNameTextView;
         public ImageButton deleteButton;
+        public ImageButton editButton;
 
         public CategoryViewHolder(@NonNull View itemView) {
             super(itemView);
 
             categoryIdTextview = itemView.findViewById(R.id.list_item_category_id);
             categoryNameTextView = itemView.findViewById(R.id.list_item_category_name);
-
             deleteButton = itemView.findViewById(R.id.list_item_category_delete_button);
+
+            editButton = itemView.findViewById(R.id.list_item_edit_button);
 
             deleteButton.setOnClickListener(view -> {
                 int position = getAdapterPosition();
@@ -81,6 +83,18 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryRe
                 delteCategoryIntent.setAction(MainActivity.INTENT_ACTION_CATEGORY_DELETE);
                 delteCategoryIntent.putExtra(MainActivity.EXTRA_CATEGORY_CATEGORY_ID, currentCategory.getCategoryId());
                 itemView.getContext().sendBroadcast(delteCategoryIntent);
+            });
+
+            editButton.setOnClickListener(view -> {
+                //get position of edit object
+                //create action
+                //send brodcast -> brodcast reciever in main activity
+
+                Category currentCategory = categories.get(getAdapterPosition());
+                Intent editCategoryIntent = new Intent();
+                editCategoryIntent.setAction(MainActivity.INTENT_ACTION_CATEGORY_EDIT);
+                editCategoryIntent.putExtra(MainActivity.EXTRA_CATEGORY_CATEGORY_ID, currentCategory.getCategoryId());
+                itemView.getContext().sendBroadcast(editCategoryIntent);
             });
         }
     }

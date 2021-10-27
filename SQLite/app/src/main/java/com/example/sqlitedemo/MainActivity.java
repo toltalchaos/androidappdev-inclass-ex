@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static final String INTENT_ACTION_CATEGORY_DELETE = "intent.delete.test.CATEGORY_DELETE";
+    public static final String INTENT_ACTION_CATEGORY_EDIT = "intent.delete.test.CATEGORY_EDIT";
     public static final String EXTRA_CATEGORY_CATEGORY_ID = "intent.ID.CATEGORY_ID";
     //define a broadcast reciever class
     class DeleteCategoryBrodcastReciever extends BroadcastReceiver{
@@ -82,22 +83,63 @@ public class MainActivity extends AppCompatActivity {
                     builder.show();
                 }
             }
+
         }
 
     }
+    //define edit brodcast reciever class
+    class EditCategoryBrodcastReciever extends BroadcastReceiver{
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            //make sure edit intent is passed
+            if(intent.getAction().equals(INTENT_ACTION_CATEGORY_EDIT)){
+                int categoryId = intent.getIntExtra(EXTRA_CATEGORY_CATEGORY_ID, 0);
+                if(categoryId > 0){
+                    DBHelper dbHelper = new DBHelper(MainActivity.this);
+                    Category editCategory = dbHelper.findOneCategoryById(categoryId);
+                    DialogCategoryEdit editDialog = new DialogCategoryEdit(editCategory, MainActivity.this);
+                    editDialog.show(getSupportFragmentManager(), "MainActivity_Edit_Dialog");
+                }
+            }
+        }
+    }
+    //create instances of brodcast reciever classes
+    private EditCategoryBrodcastReciever currentEditCategoryBrodcastReciever = new EditCategoryBrodcastReciever();
     private DeleteCategoryBrodcastReciever currentDeleteCategoryBroadcastReciever = new DeleteCategoryBrodcastReciever();
 
+    //register recievers on android OS
     @Override
     protected void onResume() {
         super.onResume();
+        //init intent filter to look for intents using constant values
         IntentFilter categoryDeleteIntentFilter = new IntentFilter();
         categoryDeleteIntentFilter.addAction(INTENT_ACTION_CATEGORY_DELETE);
         registerReceiver(currentDeleteCategoryBroadcastReciever, categoryDeleteIntentFilter);
+
+        IntentFilter categoryEditIntentFilter = new IntentFilter();
+        categoryEditIntentFilter.addAction(INTENT_ACTION_CATEGORY_EDIT);
+        registerReceiver(currentEditCategoryBrodcastReciever, categoryEditIntentFilter);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        //unregister
         unregisterReceiver(currentDeleteCategoryBroadcastReciever);
+        unregisterReceiver(currentEditCategoryBrodcastReciever);
+    }
+
+    public void updateCategory(int categoryId, Category updatedCategory){
+        DBHelper dbHelper = new DBHelper(this);
+        if(dbHelper.updateCategory(categoryId,updatedCategory) > 0){
+            //success
+            reBindRecyclerView();
+            Toast.makeText(this, "update was successful", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            //Fail
+            Toast.makeText(this, "update NOT successful", Toast.LENGTH_SHORT).show();
+        }
     }
 }
