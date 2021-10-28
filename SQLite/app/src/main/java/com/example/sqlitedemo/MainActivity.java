@@ -28,26 +28,32 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+
+        binding.activityMainFab.setOnClickListener(view1 -> {
+            DialogCategoryAdd addDialog = new DialogCategoryAdd(this);
+            addDialog.show(getSupportFragmentManager(), "DialogCategoryAdd");
+        });
+
         
     }
 
-    public void onSaveButtonClick(View view){
-        String categoryName = binding.activityMainCategoryEditText.getText().toString();
-        if (categoryName.isEmpty()){
-            Toast.makeText(this, "nothing to insert", Toast.LENGTH_SHORT).show();
-        }
-        else {
-            Category newCategory = new Category();
-            newCategory.setCategoryName(categoryName);
-            //create instance of DB
-            DBHelper dbHelper = new DBHelper(this);
-            long categoryID = dbHelper.addCategory(newCategory);
-            Toast.makeText(this, "inserted " + categoryName + " as " + categoryID, Toast.LENGTH_SHORT).show();
-            reBindRecyclerView();
-        }
-
-
-    }
+//    public void onSaveButtonClick(View view){
+//        String categoryName = binding.activityMainCategoryEditText.getText().toString();
+//        if (categoryName.isEmpty()){
+//            Toast.makeText(this, "nothing to insert", Toast.LENGTH_SHORT).show();
+//        }
+//        else {
+//            Category newCategory = new Category();
+//            newCategory.setCategoryName(categoryName);
+//            //create instance of DB
+//            DBHelper dbHelper = new DBHelper(this);
+//            long categoryID = dbHelper.addCategory(newCategory);
+//            Toast.makeText(this, "inserted " + categoryName + " as " + categoryID, Toast.LENGTH_SHORT).show();
+//            reBindRecyclerView();
+//        }
+//
+//
+//    }
     //rebind
     private void reBindRecyclerView(){
         DBHelper dbHelper = new DBHelper(this);
@@ -140,6 +146,16 @@ public class MainActivity extends AppCompatActivity {
         else{
             //Fail
             Toast.makeText(this, "update NOT successful", Toast.LENGTH_SHORT).show();
+        }
+    }
+    public void addCategory(Category newCategory){
+        DBHelper dbHelper = new DBHelper(this);
+        if(dbHelper.addCategory(newCategory) > 0){
+            reBindRecyclerView();
+            Toast.makeText(this, "Add Successful", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Toast.makeText(this, "Add was unsuccessful", Toast.LENGTH_SHORT).show();
         }
     }
 }

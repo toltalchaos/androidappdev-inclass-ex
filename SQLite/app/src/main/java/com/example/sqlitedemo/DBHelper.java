@@ -12,13 +12,20 @@ import java.util.List;
 public class DBHelper extends SQLiteOpenHelper {
 
     private static final String TAG = "DBHelper";
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 4;
     public static final String DATABASE_NAME = "SqliteDemo.db";
 
     private static final String SQL_CREATE_CATEGORY_ENTRIES =
             "CREATE TABLE " + DatabaseContract.CategoryEntry.TABLE_NAME + "(" +
              DatabaseContract.CategoryEntry._ID + " INTEGER PRIMARY KEY," + DatabaseContract.CategoryEntry.COLUMN_NAME_CATEGORYNAME + " TEXT"+")";
     private static final String SQL_DELETE_CATEGORY_ENTRIES = "DROP TABLE IF EXISTS " + DatabaseContract.CategoryEntry.TABLE_NAME;
+
+    private static final String SQL_CREATE_PRODUCT_ENTRIES = "CREATE TABLE " + DatabaseContract.ProductEntry.TABLE_NAME + "("
+            + DatabaseContract.ProductEntry._ID + " INTEGER PRIMARY KEY, " + DatabaseContract.ProductEntry.COLUMN_NAME_PRODUCTNAME + " TEXT, " +
+            DatabaseContract.ProductEntry.COLUMN_NAME_UNITPRICE + " REAL," + DatabaseContract.ProductEntry.COLUMN_NAME_CATEGORY_ID + " INTEGER, " +
+            "FOREIGN KEY (" + DatabaseContract.ProductEntry.COLUMN_NAME_CATEGORY_ID + ")" + " REFERENCES " +
+            DatabaseContract.CategoryEntry.TABLE_NAME + "(" + DatabaseContract.CategoryEntry._ID + ")";
+    private static final String SQL_DELETE_PRODUCT_ENTRIES = "DROP TABLE IF EXISTS" + DatabaseContract.ProductEntry.TABLE_NAME;
 
     public DBHelper(Context context){
         //custtom constructor passing context
@@ -28,6 +35,28 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL(SQL_CREATE_CATEGORY_ENTRIES);
+
+        Category categoryOne = new Category();
+        categoryOne.setCategoryName("Category 1");
+        addCategory(categoryOne);
+
+        sqLiteDatabase.execSQL("INSERT INTO " + DatabaseContract.CategoryEntry.TABLE_NAME + "(" +
+                DatabaseContract.CategoryEntry.COLUMN_NAME_CATEGORYNAME + ")" + " VALUES('Category 2')");
+
+        sqLiteDatabase.execSQL("INSERT INTO " + DatabaseContract.CategoryEntry.TABLE_NAME + "(" +
+                DatabaseContract.CategoryEntry.COLUMN_NAME_CATEGORYNAME + ")" + " VALUES('Category 4')");
+
+        Category categorythree = new Category();
+        categorythree.setCategoryName("cat#3");
+        addCategory(categorythree);
+
+        //ADD PRODUCTS
+        final String cat1prod1 = "INSERT INTO product_table(product_name, unit_price, category_id) VALUES('Cat1 product1',1.23,1)";
+        final String cat2prod1 = "INSERT INTO product_table(product_name, unit_price, category_id) VALUES('Cat1 product1',1.23,2)";
+        final String cat1prod2 = "INSERT INTO product_table(product_name, unit_price, category_id) VALUES('Cat1 product2',2.23,1)";
+        sqLiteDatabase.execSQL(cat1prod1);
+        sqLiteDatabase.execSQL(cat1prod2);
+        sqLiteDatabase.execSQL(cat2prod1);
     }
 
     @Override
@@ -59,6 +88,35 @@ public class DBHelper extends SQLiteOpenHelper {
         String groupBy = null;
         String having = null;
         String orderBy = null;
+        String sortOrder = DatabaseContract.CategoryEntry.COLUMN_NAME_CATEGORYNAME + "ASC";
+
+        //execute query -> returns cursor
+        return db.query(
+                DatabaseContract.CategoryEntry.TABLE_NAME,
+                columns,
+                selection,
+                selectionArgs,
+                groupBy,
+                having,
+                orderBy);
+    }
+    public Cursor getProductsByCategoryId(int categoryId){
+        //create readable db instance
+        SQLiteDatabase db = getReadableDatabase();
+
+        //select columns
+        String[] columns = {
+                DatabaseContract.ProductEntry._ID,
+                DatabaseContract.ProductEntry.COLUMN_NAME_PRODUCTNAME,
+                DatabaseContract.ProductEntry.COLUMN_NAME_UNITPRICE,
+                DatabaseContract.ProductEntry.COLUMN_NAME_CATEGORY_ID
+        };
+        //sql params for query
+        String selection = DatabaseContract.ProductEntry.COLUMN_NAME_CATEGORY_ID + "=?";
+        String[] selectionArgs = {String.valueOf(categoryId)};
+        String groupBy = null;
+        String having = null;
+        String orderBy = DatabaseContract.ProductEntry.COLUMN_NAME_PRODUCTNAME + " ASC";
         String sortOrder = DatabaseContract.CategoryEntry.COLUMN_NAME_CATEGORYNAME + "ASC";
 
         //execute query -> returns cursor
